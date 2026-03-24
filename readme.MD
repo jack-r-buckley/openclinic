@@ -16,11 +16,6 @@ docker-compose up
 ```
 This starts the server on `http://localhost:3000` with hot-reload enabled for development.
 
-Alternatively, build and run manually:
-```bash
-docker build -t openclinic .
-docker run -p 3000:3000 openclinic
-```
 
 ## CI
 Tests run automatically on push and PRs to `main` and `develop` branches via GitHub Actions. See `.github/workflows/test.yml`.
@@ -42,9 +37,9 @@ curl -X POST http://localhost:3000/appointment \
   -H "Content-Type: application/json" \
   -d '{
     "clinicianId": "123e4567-e89b-12d3-a456-426614174000",
-    "patientEmail": "john@example.com",
-    "start": "2024-12-15T10:00:00Z",
-    "end": "2024-12-15T11:00:00Z"
+    "email": "john@example.com",
+    "start": "2026-12-15T10:00:00Z",
+    "end": "2026-12-15T11:00:00Z"
   }'
 ```
 **Success Response (201):**
@@ -53,8 +48,8 @@ curl -X POST http://localhost:3000/appointment \
 "id": "550e8400-e29b-41d4-a716-446655440000",
 "clinicianId": "123e4567-e89b-12d3-a456-426614174000",
 "patientId": "550e8400-e29b-41d4-a716-446655440001",
-"start": "2024-12-15T10:00:00Z",
-"end": "2024-12-15T11:00:00Z",
+"start": "2026-12-15T10:00:00Z",
+"end": "2026-12-15T11:00:00Z",
 }
 ```
 **Error Responses:**
@@ -78,8 +73,8 @@ curl -X GET http://localhost:3000/appointment \
 "id": "550e8400-e29b-41d4-a716-446655440000",
 "clinicianId": "123e4567-e89b-12d3-a456-426614174000",
 "patientId": "550e8400-e29b-41d4-a716-446655440001",
-"start": "2024-12-15T10:00:00Z",
-"end": "2024-12-15T11:00:00Z",
+"start": "2026-12-15T10:00:00Z",
+"end": "2026-12-15T11:00:00Z",
 }]
 ```
 **Error Responses:**
@@ -91,7 +86,7 @@ curl -X GET "http://localhost:3000/appointment/clinician/123e4567-e89b-12d3-a456
   -H "X-Role: clinician"
 
 # Optional: filter by date range
-curl -X GET "http://localhost:3000/appointment/clinician/123e4567-e89b-12d3-a456-426614174000?start=2024-12-01T00:00:00Z&end=2024-12-31T23:59:59Z" \
+curl -X GET "http://localhost:3000/appointment/clinician/123e4567-e89b-12d3-a456-426614174000?start=2026-12-01T00:00:00Z&end=2026-12-31T23:59:59Z" \
   -H "X-Role: clinician"
 ```
 **Success Response (200):**
@@ -100,8 +95,8 @@ curl -X GET "http://localhost:3000/appointment/clinician/123e4567-e89b-12d3-a456
 "id": "550e8400-e29b-41d4-a716-446655440000",
 "clinicianId": "123e4567-e89b-12d3-a456-426614174000",
 "patientId": "550e8400-e29b-41d4-a716-446655440001",
-"start": "2024-12-15T10:00:00Z",
-"end": "2024-12-15T11:00:00Z",
+"start": "2026-12-15T10:00:00Z",
+"end": "2026-12-15T11:00:00Z",
 }]
 ```
 
@@ -141,7 +136,7 @@ curl -X POST http://localhost:3000/clinician \
   -d '{
     "firstName": "Sandra",
     "lastName": "Practitioner",
-    "role": "doctor"
+    "role": "clinician"
   }'
 ```
 **Success Response (201):**
@@ -150,7 +145,7 @@ curl -X POST http://localhost:3000/clinician \
 "id": "123e4567-e89b-12d3-a456-426614174000",
 "firstName":  "Sandra",
 "lastName":  "Practitioner",
-"role":  "doctor"
+"role":  "clinician"
 }
 
 ```
