@@ -1,1 +1,5 @@
 node_modules
+openclinic.db
+openclinic.db-wal
+openclinic.db-shm
+dist
