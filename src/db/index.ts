@@ -1,9 +1,12 @@
 import Database, { type Database as SQLiteDatabase }from 'better-sqlite3'
 import * as fs from 'fs'
-import path = require('path');
+import path from 'path';
 
 const options = {}
-const db = new Database('openclinic.db', options);
+
+// Use in-memory database for tests, file-based for production
+const dbPath = process.env.NODE_ENV === 'test' ? ':memory:' : 'openclinic.db';
+const db = new Database(dbPath, options);
 
 db.pragma('journal_mode = WAL');
 

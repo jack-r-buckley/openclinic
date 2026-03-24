@@ -1,7 +1,6 @@
 import { z } from 'zod';
 import { IdSchema, IsoDatetimeSchema } from './common';
 
-// Request to create an appointment with patient details
 export const CreateAppointmentRequestSchema = z.object({
   clinicianId: IdSchema,
   patientEmail: z.string().email(),
@@ -17,7 +16,6 @@ export const CreateAppointmentRequestSchema = z.object({
   }
 );
 
-// Query parameters for date range filtering
 export const DateRangeQuerySchema = z.object({
   from: IsoDatetimeSchema.optional(),
   to: IsoDatetimeSchema.optional(),

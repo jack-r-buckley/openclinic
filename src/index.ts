@@ -1,7 +1,7 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
-import appointmentRoutes from './routes/appointments';
-import patientRoutes from './routes/patients';
-import clinicianRoutes from './routes/clinicians';
+import appointmentRoutes from './routes/appointment';
+import patientRoutes from './routes/patient';
+import clinicianRoutes from './routes/clinician';
 import { AppointmentValidationError, AppointmentConflictError, ClinicianNotFoundError } from './utils/errors';
 import { z } from 'zod';
 
@@ -33,9 +33,9 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-app.use('/appointments', appointmentRoutes);
-app.use('/patients', patientRoutes);
-app.use('/clinicians', clinicianRoutes);
+app.use('/appointment', appointmentRoutes);
+app.use('/patient', patientRoutes);
+app.use('/clinician', clinicianRoutes);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error('Error:', err);

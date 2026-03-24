@@ -31,13 +31,6 @@ export const appointmentService = {
       });
     }
 
-    const hasOverlap = appointmentRepo.findOverlap(request.clinicianId, startMs, endMs);
-    if (hasOverlap) {
-      throw new AppointmentConflictError(
-        'Appointment overlaps with an existing appointment for this clinician'
-      );
-    }
-
     const appointmentData: CreateAppointmentInput = {
       clinicianId: request.clinicianId,
       patientId: patient.id,
@@ -45,7 +38,17 @@ export const appointmentService = {
       end: endMs,
     };
 
-    return appointmentRepo.insert(appointmentData);
+    // Use atomic transaction for concurrency-safe check + insert
+    try {
+      return appointmentRepo.createIfNoOverlap(appointmentData);
+    } catch (err: any) {
+      if (err.message === 'OVERLAP') {
+        throw new AppointmentConflictError(
+          'Appointment overlaps with an existing appointment for this clinician'
+        );
+      }
+      throw err;
+    }
   },
 
   listByClinician: (clinicianId: string, from?: number, to?: number): Appointment[] => {

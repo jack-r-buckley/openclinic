@@ -41,7 +41,7 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-router.get('/clinicians/:id/appointments', (req: Request, res: Response, next: NextFunction) => {
+router.get('/clinician/:id', (req: Request, res: Response, next: NextFunction) => {
   try {
     const clinicianId = IdSchema.parse(req.params.id) as string;
 
