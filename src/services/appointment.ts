@@ -38,7 +38,6 @@ export const appointmentService = {
       end: endMs,
     };
 
-    // Use atomic transaction for concurrency-safe check + insert
     try {
       return appointmentRepo.createIfNoOverlap(appointmentData);
     } catch (err: any) {

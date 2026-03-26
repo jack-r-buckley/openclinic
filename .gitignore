@@ -3,3 +3,5 @@ openclinic.db
 openclinic.db-wal
 openclinic.db-shm
 dist
+src/.DS_Store
+.DS_Store

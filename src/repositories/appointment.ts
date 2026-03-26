@@ -4,19 +4,12 @@ import { Appointment, CreateAppointmentInput, CreateAppointmentSchema, Appointme
 import { z } from 'zod';
 
 export const appointmentRepo = {
-  /**
-   * CONCURRENCY-SAFE: Check for overlap and create appointment atomically
-   * Uses BEGIN IMMEDIATE to acquire exclusive lock before checking overlaps
-   * This prevents the TOCTOU (Time-of-check-time-of-use) race condition
-   * where two concurrent requests could both check for overlaps and both find none
-   */
+
   createIfNoOverlap: (data: CreateAppointmentInput): Appointment => {
     const id = uuidv4();
     
-    // BEGIN IMMEDIATE acquires an exclusive write lock immediately
-    // Serializes all concurrent appointment creation for the same clinician
+
     const transaction = db.transaction(() => {
-      // Check for overlap within the transaction (lock held)
       const overlap = db
         .prepare(`
           SELECT 1 FROM appointment
@@ -31,14 +24,12 @@ export const appointmentRepo = {
         throw new Error('OVERLAP');
       }
 
-      // Insert within same transaction
       db.prepare(`
         INSERT INTO appointment (id, clinicianId, patientId, start, end)
         VALUES (?, ?, ?, ?, ?)
       `).run(id, data.clinicianId, data.patientId, data.start, data.end);
     });
 
-    // Execute with IMMEDIATE mode to get exclusive lock right away
     db.exec('BEGIN IMMEDIATE');
     try {
       transaction();
